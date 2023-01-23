@@ -21,16 +21,16 @@ class DemoTest {
     private lateinit var dependencyViaFactory: DependencyViaFactory
 
     @MockBean(DependencyViaFactory::class)
-    fun mockFactory() = mockk<DependencyViaFactory>()
+    fun mockDependencyViaFactory() = mockk<DependencyViaFactory>()
 
     @MockBean(DependencyDirectlyViaSingleton::class)
-    fun mockSingleton() = mockk<DependencyDirectlyViaSingleton>()
+    fun mockDependencyViaSingleton() = mockk<DependencyDirectlyViaSingleton>()
 
     @Nested
-    inner class FailsForBeanCreatedByFactory {
+    inner class BeanCreatedViaFactory {
 
         @Test
-        fun `does not apply mock`() {
+        fun `ignores mocked behavior`() {
             every { dependencyViaFactory.doMagic() } returns "mocked behavior"
 
             val result = service.doStuffViaFactory()
@@ -40,10 +40,10 @@ class DemoTest {
     }
 
     @Nested
-    inner class SucceedsForBeanCreatedViaSingleton {
+    inner class BeanCreatedDirectlyViaSingleton {
 
         @Test
-        fun `does apply mock`() {
+        fun `applies mocked behavior`() {
             every { dependencyDirectlyViaSingleton.doMagic() } returns "mocked behavior"
 
             val result = service.doStuffViaSingleton()
